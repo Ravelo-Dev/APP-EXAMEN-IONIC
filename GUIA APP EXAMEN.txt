@@ -1,0 +1,225 @@
+¡Entendido! Aquí tienes una guía paso a paso para crear una aplicación móvil con Angular e Ionic que cumpla con los requisitos de tu examen.
+
+### Paso 1: Configuración del Entorno
+1. **Instalar Node.js**: Asegúrate de tener Node.js instalado en tu máquina. Puedes descargarlo desde [nodejs.org](https://nodejs.org/).
+2. **Instalar Angular CLI**: Abre tu terminal y ejecuta el siguiente comando:
+   ```bash
+   npm install -g @angular/cli
+   ```
+3. **Instalar Ionic CLI**: 
+   ```bash
+   npm install -g @ionic/cli
+   ```
+
+### Paso 2: Crear un Nuevo Proyecto Ionic con Angular
+1. **Crear el proyecto**:
+   ```bash
+   ionic start MiApp blank --type=angular
+   ```
+   Selecciona "Angular" como el framework.
+
+2. **Navegar al directorio del proyecto**:
+   ```bash
+   cd MiApp
+   ```
+
+### Paso 3: Crear Páginas
+1. **Crear la página de presentación**:
+   ```bash
+   ionic generate page presentacion
+   ```
+
+2. **Crear la página para la tabla de multiplicar**:
+   ```bash
+   ionic generate page tabla-multiplicar
+   ```
+
+3. **Crear la página para los números**:
+   ```bash
+   ionic generate page numeros
+   ```
+
+### Paso 4: Implementar la Lógica en las Páginas
+1. **Página de Presentación** (`presentacion.page.html`):
+   ```html
+   <ion-header>
+     <ion-toolbar>
+       <ion-title>Presentación</ion-title>
+     </ion-toolbar>
+   </ion-header>
+
+   <ion-content>
+     <div>
+       <img src="ruta/a/tu/foto.jpg" alt="Foto de Presentación">
+       <h1>Nombre: Tu Nombre</h1>
+       <h2>Apellido: Tu Apellido</h2>
+     </div>
+   </ion-content>
+   ```
+
+2. **Página de Tabla de Multiplicar** (`tabla-multiplicar.page.html` y `tabla-multiplicar.page.ts`):
+   ```html
+   <ion-header>
+     <ion-toolbar>
+       <ion-title>Tabla de Multiplicar</ion-title>
+     </ion-toolbar>
+   </ion-header>
+
+   <ion-content>
+     <ion-item>
+       <ion-label position="floating">Ingresa un número</ion-label>
+       <ion-input type="number" [(ngModel)]="numero"></ion-input>
+     </ion-item>
+     <ion-button expand="full" (click)="generarTabla()">Generar Tabla</ion-button>
+     <ion-list>
+       <ion-item *ngFor="let resultado of resultados">{{ resultado }}</ion-item>
+     </ion-list>
+   </ion-content>
+   ```
+
+   ```typescript
+   import { Component } from '@angular/core';
+
+   @Component({
+     selector: 'app-tabla-multiplicar',
+     templateUrl: './tabla-multiplicar.page.html',
+     styleUrls: ['./tabla-multiplicar.page.scss'],
+   })
+   export class TablaMultiplicarPage {
+     numero: number;
+     resultados: number[] = [];
+
+     generarTabla() {
+       this.resultados = [];
+       for (let i = 1; i <= 14; i++) {
+         this.resultados.push(this.numero * i);
+       }
+     }
+   }
+   ```
+
+3. **Página de Números** (`numeros.page.html` y `numeros.page.ts`):
+   ```html
+   <ion-header>
+     <ion-toolbar>
+       <ion-title>Números</ion-title>
+     </ion-toolbar>
+   </ion-header>
+
+   <ion-content>
+     <ion-item>
+       <ion-label position="floating">Número 1</ion-label>
+       <ion-input type="number" [(ngModel)]="numero1"></ion-input>
+     </ion-item>
+     <ion-item>
+       <ion-label position="floating">Número 2</ion-label>
+       <ion-input type="number" [(ngModel)]="numero2"></ion-input>
+     </ion-item>
+     <ion-item>
+       <ion-label position="floating">Número 3</ion-label>
+       <ion-input type="number" [(ngModel)]="numero3"></ion-input>
+     </ion-item>
+     <ion-button expand="full" (click)="calcular()">Calcular</ion-button>
+     <ion-list>
+       <ion-item>Mayor: {{ mayor }}</ion-item>
+       <ion-item>Menor: {{ menor }}</ion-item>
+       <ion-item>Promedio: {{ promedio }}</ion-item>
+     </ion-list>
+   </ion-content>
+   ```
+
+   ```typescript
+   import { Component } from '@angular/core';
+
+   @Component({
+     selector: 'app-numeros',
+     templateUrl: './numeros.page.html',
+     styleUrls: ['./numeros.page.scss'],
+   })
+   export class NumerosPage {
+     numero1: number;
+     numero2: number;
+     numero3: number;
+     mayor: number;
+     menor: number;
+     promedio: number;
+
+     calcular() {
+       const numeros = [this.numero1, this.numero2, this.numero3];
+       this.mayor = Math.max(...numeros);
+       this.menor = Math.min(...numeros);
+       this.promedio = numeros.reduce((a, b) => a + b, 0) / numeros.length;
+     }
+   }
+   ```
+
+### Paso 5: Configurar las Rutas
+1. **Modificar `app-routing.module.ts`**:
+   ```typescript
+   import { NgModule } from '@angular/core';
+   import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+
+   const routes: Routes = [
+     { path: '', redirectTo: 'presentacion', pathMatch: 'full' },
+     { path: 'presentacion', loadChildren: () => import('./presentacion/presentacion.module').then(m => m.PresentacionPageModule) },
+     { path: 'tabla-multiplicar', loadChildren: () => import('./tabla-multiplicar/tabla-multiplicar.module').then(m => m.TablaMultiplicarPageModule) },
+     { path: 'numeros', loadChildren: () => import('./numeros/numeros.module').then(m => m.NumerosPageModule) },
+   ];
+
+   @NgModule({
+     imports: [
+       RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+     ],
+     exports: [RouterModule]
+   })
+   export class AppRoutingModule { }
+   ```
+
+### Paso 6: Ejecutar la Aplicación
+1. **Iniciar el servidor de desarrollo**:
+   ```bash
+   ionic serve
+   ```
+   Navega a `http://localhost:8100` para ver tu aplicación en acción.
+
+### Paso 7: Generar el APK
+1. **Construir la aplicación**:
+   ```bash
+   ionic build --prod
+   ```
+
+2. **Convertir la aplicación web en una aplicación móvil**:
+   Utiliza **Capacitor** para empaquetar tu aplicación Ionic como una aplicación móvil.
+
+   **Ejemplo con Capacitor**:
+   - Instalar Capacitor:
+     ```bash
+     npm install @capacitor/core @capacitor/cli
+     ```
+   - Inicializar Capacitor:
+     ```bash
+     npx cap init
+     ```
+   - Añadir la plataforma Android:
+     ```bash
+     npx cap add android
+     ```
+   - Sincronizar tu proyecto:
+     ```bash
+     npx cap sync
+     ```
+   - Abrir Android Studio para construir el APK:
+     ```bash
+     npx cap open android
+     ```
+
+### Comentarios en el Código
+Asegúrate de comentar tu código en al menos dos lugares diferentes con tu nombre y matrícula.
+
+### Consejos para el Video
+- Practica varias veces antes de grabar.
+- Explica claramente cada paso y la tecnología que estás utilizando.
+- Asegúrate de que tu rostro y la pantalla sean visibles durante la grabación.
+- No uses herramientas automáticas para generar código.
+
+¡
