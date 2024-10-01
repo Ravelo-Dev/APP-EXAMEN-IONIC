@@ -65,16 +65,39 @@
      </ion-toolbar>
    </ion-header>
 
-   <ion-content>
-     <ion-item>
-       <ion-label position="floating">Ingresa un número</ion-label>
-       <ion-input type="number" [(ngModel)]="numero"></ion-input>
-     </ion-item>
-     <ion-button expand="full" (click)="generarTabla()">Generar Tabla</ion-button>
-     <ion-list>
-       <ion-item *ngFor="let resultado of resultados">{{ resultado }}</ion-item>
-     </ion-list>
-   </ion-content>
+   <ion-content [fullscreen]="true" class="ion-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Tabla de Multiplicar</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card color="light">
+    <ion-card-header>
+      <ion-card-subtitle>Generador de tablas de multiplicar </ion-card-subtitle>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <ion-item>
+        <ion-input type="number" fill="solid" label="Escribe un número:" labelPlacement="floating" [(ngModel)]="num"></ion-input>
+      </ion-item>
+      <br>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list>
+    <ion-item-divider color="medium">
+      <ion-label>Tabla de multiplicar del número {{num}}</ion-label>
+    </ion-item-divider>
+    <ion-item *ngFor="let n of rango;">
+      <ion-label>
+        {{num}} x {{n}} = {{num * n}}
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+
+  </ion-content>
    ```
 
    ```typescript
@@ -86,16 +109,21 @@
      styleUrls: ['./tabla-multiplicar.page.scss'],
    })
    export class TablaMultiplicarPage {
-     numero: number;
-     resultados: number[] = [];
+     
+  constructor() { }
+  num: number = 1;
 
-     generarTabla() {
-       this.resultados = [];
-       for (let i = 1; i <= 14; i++) {
-         this.resultados.push(this.numero * i);
-       }
-     }
-   }
+  tablaVisible: boolean = false;
+
+  rango: number[] = [1,2,3,4,5,6,7,8,9,10,11,12];
+  generarTabla() {
+    this.tablaVisible = true;
+  }
+
+  ngOnInit() {
+  }
+
+  }
    ```
 
 3. **Página de Números** (`numeros.page.html` y `numeros.page.ts`):
