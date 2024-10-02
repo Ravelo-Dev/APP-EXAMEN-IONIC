@@ -13,4 +13,26 @@
       <ion-title size="large">Tabla de multiplicar</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <ion-card color="light">
+    <ion-card-header>
+      <ion-card-subtitle>Ingrese un numero</ion-card-subtitle>
+      <ion-card-title>
+        <ion-input [(ngModel)]="numero" type="number" placeholder="Numero"></ion-input>
+      </ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-list>
+    <ion-item-divider color="medium">
+      <ion-label>
+        Tabla de multiplicar del {{ numero }}
+      </ion-label>
+    </ion-item-divider>
+    <ion-item *ngFor="let n of rango;">
+      <ion-label>
+        {{ numero }} x {{ n }} = {{ numero * n }}
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
